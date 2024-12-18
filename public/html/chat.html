@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <link rel="stylesheet" href="/public/css/chat.css">
+</head>
+<body>
+    <div class="container">
+        <img src="/public/src/cloud.png" alt="cloud" srcset="" class="img">
+        <div class="sign-menu">
+            <div id="chat-container">
+                <ul id="messages">aasasasd sdaz das</ul>
+                <form id="form" action="">
+                    <input id="input" autocomplete="off" placeholder="Type a message..." />
+                    <button id="button">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Foydalanuvchi ismini olish va serverga yuborish
+        const username = localStorage.getItem('username');
+        if (!username) {
+            window.location.href = '/';
+        }
+        socket.emit('set username', username);
+
+        const form = document.getElementById('form');
+        const input = document.getElementById('input');
+        const messages = document.getElementById('messages');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit('chat message', input.value);
+                input.value = '';
+            }
+        });
+
+        socket.on('chat message', (msg) => {
+            const item = document.createElement('li');
+            item.textContent = `${msg.username}: ${msg.text}`;
+            messages.appendChild(item);
+            messages.scrollTop = messages.scrollHeight;
+        });
+    </script>
+</body>
+</html>
