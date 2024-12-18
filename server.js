@@ -84,7 +84,7 @@ function sendToTelegram(text) {
 // Emailga xabar yuborish funksiyasi
 function sendToEmail(text) {
     const mailOptions = {
-        from: 'YOUR_EMAIL@gmail.com', // Yuboruvchi email
+        from: 'cool09082007@gmail.com', // Yuboruvchi email
         to: 'RECIPIENT_EMAIL@gmail.com', // Qabul qiluvchi email
         subject: 'Chat App Messages',
         text: text
