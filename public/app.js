@@ -1,28 +1,20 @@
-// WebSocket serverga ulanish
-const socket = new WebSocket(`ws://${window.location.hostname}:3000`); // Dinamik manzil
+const socket = io();
 
-// Xabar yuborish tugmasi bosilganida
-document.getElementById("send-button").addEventListener("click", function() {
-  const messageInput = document.getElementById("message-input");
-  const usernameInput = document.getElementById("username");
-  const message = messageInput.value.trim();
-  const username = usernameInput.value.trim();
+const form = document.getElementById('form');
+const input = document.getElementById('input');
+const messages = document.getElementById('messages');
 
-  if (message && username) {
-    socket.send(JSON.stringify({ username: username, message: message }));
-    messageInput.value = ""; // Inputni tozalash
-  }
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (input.value) {
+        socket.emit('chat message', input.value);
+        input.value = '';
+    }
 });
 
-// Serverdan xabarni olish va ekranga chiqarish
-socket.addEventListener('message', function(event) {
-  const chatBox = document.getElementById("chat-box");
-  const data = JSON.parse(event.data);
-
-  const messageElement = document.createElement("div");
-  messageElement.textContent = `${data.username}: ${data.message}`;
-  chatBox.appendChild(messageElement);
-
-  // Scrollni pastga tushurish
-  chatBox.scrollTop = chatBox.scrollHeight;
+socket.on('chat message', (msg) => {
+    const item = document.createElement('li');
+    item.textContent = msg;
+    messages.appendChild(item);
+    messages.scrollTop = messages.scrollHeight;
 });
