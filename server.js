@@ -15,9 +15,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
 
-    // Foydalanuvchi xabar yuborganda
+    // Foydalanuvchi ismni saqlash
+    socket.on('set username', (username) => {
+        socket.username = username;
+        console.log(`Username set for ${socket.id}: ${username}`);
+    });
+
+    // Xabar yuborilganda
     socket.on('chat message', (msg) => {
-        io.emit('chat message', msg);
+        const message = { username: socket.username || 'Anonymous', text: msg };
+        io.emit('chat message', message);
     });
 
     // Foydalanuvchi uzilganda

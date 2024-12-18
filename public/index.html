@@ -3,18 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real-Time Chat App</title>
+    <title>Login - Chat App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="chat-container">
-        <ul id="messages"></ul>
-        <form id="form" action="">
-            <input id="input" autocomplete="off" placeholder="Type a message..." />
-            <button>Send</button>
+    <div id="login-container">
+        <h1>Welcome to Chat App</h1>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Enter your username" required />
+            <button type="submit">Join Chat</button>
         </form>
     </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="app.js"></script>
+    <script>
+        const form = document.getElementById('login-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            if (username) {
+                localStorage.setItem('username', username);
+                window.location.href = '/chat.html';
+            }
+        });
+    </script>
 </body>
 </html>
